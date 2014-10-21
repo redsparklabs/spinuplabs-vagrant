@@ -27,28 +27,20 @@ package { ['sqlite3', 'libsqlite3-dev']:
   ensure => installed;
 }
 
-# --- MySQL --------------------------------------------------------------------
-
-class install_mysql {
-  class { 'mysql': }
-
-  class { 'mysql::server':
-    config_hash => { 'root_password' => '' }
-  }
-
-  package { 'libmysqlclient15-dev':
-    ensure => installed
-  }
-}
-class { 'install_mysql': }
-
 # --- PostgreSQL ---------------------------------------------------------------
 
 class install_postgres {
-  class { 'postgresql': }
+  class { 'postgresql::client': }
 
-  class { 'postgresql::server': }
+  class { 'postgresql::server': 
+    listen_addresses  => '*',  
+  }
 
+  postgresql::server::db { 'appeer_dev':
+    user     => 'vagrant',
+    password => postgresql_password('vagrant', 'password'),
+  }
+  
   package { 'libpq-dev':
     ensure => installed
   }
