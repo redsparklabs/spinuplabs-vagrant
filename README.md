@@ -20,5 +20,4 @@ Git
 Databases
 ---
 - SQLite
-- MySQL
 - Postgres
